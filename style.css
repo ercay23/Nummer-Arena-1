@@ -12,7 +12,7 @@ h1{
     margin-top:20px;
 }
 
-/* CONTAINER */
+/* BALL AREA */
 #balls{
     display:flex;
     justify-content:center;
@@ -36,6 +36,7 @@ h1{
     color:white;
 
     cursor:pointer;
+    user-select:none;
 
     background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
 
@@ -46,10 +47,15 @@ h1{
     transition:0.2s;
 }
 
-/* 🟠 BIG NUMBERS */
+/* 🟠 BIG BALL */
 .big{
     background: radial-gradient(circle at 30% 30%, #fbbf24, #f97316);
     box-shadow:
         0 0 25px rgba(251,191,36,.8),
         inset -8px -8px 16px rgba(0,0,0,.3);
+}
+
+/* 🎯 DRAG FEEL */
+.ball:active{
+    transform:scale(1.1);
 }
