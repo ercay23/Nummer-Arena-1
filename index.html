@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena V4</title>
+<title>Number Arena V5</title>
 
 <style>
 body{
@@ -13,16 +13,80 @@ body{
     text-align:center;
 }
 
+/* 🎓 PROFESSOR */
+#prof{
+    width:120px;
+    margin-top:10px;
+    filter:drop-shadow(0 0 10px #00e5ff);
+}
+
+/* TITLE */
 h1{
     color:#00e5ff;
+    margin:10px;
+}
+
+/* TARGET */
+#target{
+    font-size:34px;
+    color:#00ffcc;
+}
+
+/* CUBES */
+#numbers{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.cube{
+    width:90px;
+    height:90px;
+    margin:10px;
+    font-size:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(145deg,#1f2937,#0b1220);
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transform:perspective(250px) rotateX(15deg);
+    box-shadow:
+        6px 6px 14px rgba(0,0,0,0.7),
+        -3px -3px 10px rgba(0,229,255,0.15);
+
+    transition:0.2s;
+}
+
+.cube:hover{
+    transform:scale(1.15) rotateX(0deg);
+}
+
+/* OPS */
+#ops button{
+    padding:12px;
+    margin:5px;
+    font-size:20px;
+    background:#00e5ff;
+    border:none;
+    cursor:pointer;
+    border-radius:6px;
+}
+
+/* INPUT */
+#expr{
+    width:85%;
+    font-size:22px;
+    padding:10px;
     margin-top:10px;
 }
 
-#game{
-    display:none;
-}
-
-button{
+/* BUTTONS */
+.btn{
     padding:10px;
     margin:5px;
     background:#00e5ff;
@@ -31,62 +95,7 @@ button{
     border-radius:6px;
 }
 
-button:hover{opacity:0.8;}
-
-.langBtn{
-    background:#1f2937;
-    color:white;
-}
-
-.container{
-    padding:10px;
-}
-
-.cube{
-    width:80px;
-    height:80px;
-    margin:10px;
-    background:linear-gradient(145deg,#1f2937,#0b1220);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:26px;
-    border-radius:12px;
-    cursor:pointer;
-    box-shadow:
-        6px 6px 12px rgba(0,0,0,0.6),
-        -3px -3px 10px rgba(0,229,255,0.15);
-    transform:perspective(200px) rotateX(10deg);
-    transition:0.2s;
-}
-
-.cube:hover{
-    transform:scale(1.1) rotateX(0deg);
-}
-
-#numbers{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-}
-
-#expr{
-    margin-top:10px;
-    padding:10px;
-    font-size:20px;
-    width:80%;
-}
-
-#target{
-    font-size:28px;
-    color:#00ffcc;
-}
-
-#result{
-    margin-top:10px;
-    color:#a5f3fc;
-}
-
+/* MODAL */
 #modal{
     position:fixed;
     top:0;
@@ -94,60 +103,57 @@ button:hover{opacity:0.8;}
     width:100%;
     height:100%;
     display:none;
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.85);
     align-items:center;
     justify-content:center;
 }
 
-#modalBox{
+#box{
     background:#111827;
     padding:30px;
-    border-radius:12px;
-    box-shadow:0 0 20px #00e5ff;
+    border-radius:15px;
+    box-shadow:0 0 25px #00e5ff;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🌍 LANGUAGE -->
-<div id="langScreen">
-<h1>NUMBER ARENA</h1>
+<h1>NUMBER ARENA 🎓</h1>
 
-<button class="langBtn" onclick="start('tr')">Türkçe</button>
-<button class="langBtn" onclick="start('en')">English</button>
-<button class="langBtn" onclick="start('de')">Deutsch</button>
-<button class="langBtn" onclick="start('es')">Español</button>
+<!-- 🎓 PROFESSOR IMAGE (placeholder emoji style) -->
+<div>
+    <img id="prof" src="https://i.imgur.com/8QfQ9Qp.png" onerror="this.style.display='none'">
 </div>
-
-<!-- 🎮 GAME -->
-<div id="game">
 
 <h2>HEDEF: <span id="target"></span></h2>
 
 <div id="numbers"></div>
 
-<input id="expr" readonly placeholder="tıkla ve oluştur">
+<!-- ➗ OPERATORS -->
+<div id="ops">
+<button onclick="addOp('+')">+</button>
+<button onclick="addOp('-')">-</button>
+<button onclick="addOp('*')">×</button>
+<button onclick="addOp('/')">÷</button>
+</div>
+
+<input id="expr" readonly>
 
 <br>
 
-<button onclick="undo()">GERİ AL</button>
-<button onclick="clearAll()">SİL</button>
-
-<br>
-
-<button onclick="calculate()">HESAPLA</button>
-<button onclick="finish()">BİTİR</button>
+<button class="btn" onclick="undo()">GERİ AL</button>
+<button class="btn" onclick="clearAll()">SİL</button>
+<button class="btn" onclick="calculate()">HESAPLA</button>
+<button class="btn" onclick="finish()">BİTİR</button>
 
 <p id="result"></p>
 
-</div>
-
 <!-- 🎉 MODAL -->
 <div id="modal">
-<div id="modalBox">
+<div id="box">
 <h2>Oyun Bitti 🎯</h2>
-<p id="finalText"></p>
+<p id="final"></p>
 <button onclick="restart()">Tekrar Oyna</button>
 </div>
 </div>
@@ -156,14 +162,8 @@ button:hover{opacity:0.8;}
 
 let nums=[];
 let target=0;
-let currentExpr="";
+let expr="";
 let history=[];
-
-function start(lang){
-    document.getElementById("langScreen").style.display="none";
-    document.getElementById("game").style.display="block";
-    newGame();
-}
 
 function randomSmall(){
     return Math.floor(Math.random()*9)+1;
@@ -188,8 +188,8 @@ function newGame(){
     let box=document.getElementById("numbers");
     box.innerHTML="";
 
+    expr="";
     history=[];
-    currentExpr="";
     document.getElementById("expr").value="";
 
     nums.forEach(n=>{
@@ -198,51 +198,57 @@ function newGame(){
         d.innerText=n;
 
         d.onclick=()=>{
-            history.push(currentExpr);
-            currentExpr += n;
-            document.getElementById("expr").value=currentExpr;
+            history.push(expr);
+            expr += n;
+            document.getElementById("expr").value=expr;
         };
 
         box.appendChild(d);
     });
 }
 
+function addOp(o){
+    history.push(expr);
+    expr += " " + o + " ";
+    document.getElementById("expr").value=expr;
+}
+
 function undo(){
     if(history.length>0){
-        currentExpr = history.pop();
-        document.getElementById("expr").value=currentExpr;
+        expr = history.pop();
+        document.getElementById("expr").value=expr;
     }
 }
 
 function clearAll(){
-    history.push(currentExpr);
-    currentExpr="";
+    history.push(expr);
+    expr="";
     document.getElementById("expr").value="";
 }
 
 function calculate(){
     try{
-        let result = eval(currentExpr);
-        document.getElementById("result").innerText = "Sonuç: " + result;
+        let r = eval(expr);
+        document.getElementById("result").innerText="Sonuç: "+r;
     }catch{
-        document.getElementById("result").innerText = "Hata";
+        document.getElementById("result").innerText="Hata";
     }
 }
 
 function finish(){
 
-    let result = eval(currentExpr);
-    let diff = Math.abs(target - result);
+    let r = eval(expr);
+    let diff = Math.abs(target - r);
 
     let msg="";
     let score=0;
 
     if(diff==0){msg="Mükemmel 🎯"; score=20;}
-    else if(diff<=5){msg="Çok iyi 🔥"; score=10;}
+    else if(diff<=5){msg="İyi 🔥"; score=10;}
     else{msg="Devam 💪"; score=5;}
 
-    document.getElementById("finalText").innerHTML =
-    msg + "<br>Fark: " + diff + "<br>Puan: " + score;
+    document.getElementById("final").innerHTML =
+    msg + "<br>Sonuç: " + r + "<br>Fark: " + diff + "<br>Puan: " + score;
 
     document.getElementById("modal").style.display="flex";
 }
@@ -251,6 +257,8 @@ function restart(){
     document.getElementById("modal").style.display="none";
     newGame();
 }
+
+newGame();
 
 </script>
 
