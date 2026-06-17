@@ -2,76 +2,91 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena Cube</title>
+<title>Number Arena V4</title>
 
 <style>
 body{
     margin:0;
     font-family:Arial;
-    background: radial-gradient(circle at top,#0b1220,#050814);
+    background:radial-gradient(circle at top,#0b1220,#050814);
     color:white;
     text-align:center;
 }
 
 h1{
     color:#00e5ff;
-    margin-top:15px;
+    margin-top:10px;
 }
 
-#numbers{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    margin-top:20px;
+#game{
+    display:none;
+}
+
+button{
+    padding:10px;
+    margin:5px;
+    background:#00e5ff;
+    border:none;
+    cursor:pointer;
+    border-radius:6px;
+}
+
+button:hover{opacity:0.8;}
+
+.langBtn{
+    background:#1f2937;
+    color:white;
+}
+
+.container{
+    padding:10px;
 }
 
 .cube{
     width:80px;
     height:80px;
     margin:10px;
-    background:linear-gradient(145deg,#1f2937,#111827);
+    background:linear-gradient(145deg,#1f2937,#0b1220);
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:26px;
     border-radius:12px;
     cursor:pointer;
-    box-shadow:0 0 10px rgba(0,229,255,0.2);
+    box-shadow:
+        6px 6px 12px rgba(0,0,0,0.6),
+        -3px -3px 10px rgba(0,229,255,0.15);
+    transform:perspective(200px) rotateX(10deg);
     transition:0.2s;
 }
 
 .cube:hover{
-    transform:scale(1.1);
+    transform:scale(1.1) rotateX(0deg);
 }
 
-#ops button{
-    padding:12px;
-    margin:5px;
-    font-size:18px;
-    background:#00e5ff;
-    border:none;
-    cursor:pointer;
+#numbers{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
 }
 
 #expr{
-    margin-top:15px;
-    font-size:22px;
+    margin-top:10px;
     padding:10px;
+    font-size:20px;
     width:80%;
+}
+
+#target{
+    font-size:28px;
+    color:#00ffcc;
 }
 
 #result{
     margin-top:10px;
-    font-size:18px;
     color:#a5f3fc;
 }
 
-#target{
-    font-size:30px;
-    color:#00ffcc;
-}
-
-/* 🎉 fancy modal */
 #modal{
     position:fixed;
     top:0;
@@ -87,33 +102,37 @@ h1{
 #modalBox{
     background:#111827;
     padding:30px;
-    border-radius:15px;
-    text-align:center;
+    border-radius:12px;
     box-shadow:0 0 20px #00e5ff;
-}
-
-#modalBox h2{
-    color:#00e5ff;
 }
 </style>
 </head>
 
 <body>
 
-<h1>NUMBER ARENA 🔷</h1>
+<!-- 🌍 LANGUAGE -->
+<div id="langScreen">
+<h1>NUMBER ARENA</h1>
+
+<button class="langBtn" onclick="start('tr')">Türkçe</button>
+<button class="langBtn" onclick="start('en')">English</button>
+<button class="langBtn" onclick="start('de')">Deutsch</button>
+<button class="langBtn" onclick="start('es')">Español</button>
+</div>
+
+<!-- 🎮 GAME -->
+<div id="game">
 
 <h2>HEDEF: <span id="target"></span></h2>
 
 <div id="numbers"></div>
 
-<div id="ops">
-<button onclick="setOp('+')">+</button>
-<button onclick="setOp('-')">-</button>
-<button onclick="setOp('*')">×</button>
-<button onclick="setOp('/')">÷</button>
-</div>
-
 <input id="expr" readonly placeholder="tıkla ve oluştur">
+
+<br>
+
+<button onclick="undo()">GERİ AL</button>
+<button onclick="clearAll()">SİL</button>
 
 <br>
 
@@ -121,6 +140,8 @@ h1{
 <button onclick="finish()">BİTİR</button>
 
 <p id="result"></p>
+
+</div>
 
 <!-- 🎉 MODAL -->
 <div id="modal">
@@ -134,11 +155,15 @@ h1{
 <script>
 
 let nums=[];
-let selected=null;
-let op=null;
-let currentExpr="";
 let target=0;
-let lastResult=0;
+let currentExpr="";
+let history=[];
+
+function start(lang){
+    document.getElementById("langScreen").style.display="none";
+    document.getElementById("game").style.display="block";
+    newGame();
+}
 
 function randomSmall(){
     return Math.floor(Math.random()*9)+1;
@@ -163,30 +188,42 @@ function newGame(){
     let box=document.getElementById("numbers");
     box.innerHTML="";
 
+    history=[];
+    currentExpr="";
+    document.getElementById("expr").value="";
+
     nums.forEach(n=>{
         let d=document.createElement("div");
         d.className="cube";
         d.innerText=n;
 
         d.onclick=()=>{
+            history.push(currentExpr);
             currentExpr += n;
-            document.getElementById("expr").value = currentExpr;
+            document.getElementById("expr").value=currentExpr;
         };
 
         box.appendChild(d);
     });
 }
 
-function setOp(o){
-    currentExpr += " " + o + " ";
-    document.getElementById("expr").value = currentExpr;
+function undo(){
+    if(history.length>0){
+        currentExpr = history.pop();
+        document.getElementById("expr").value=currentExpr;
+    }
+}
+
+function clearAll(){
+    history.push(currentExpr);
+    currentExpr="";
+    document.getElementById("expr").value="";
 }
 
 function calculate(){
     try{
-        lastResult = eval(currentExpr);
-        document.getElementById("result").innerText =
-        "Sonuç: " + lastResult;
+        let result = eval(currentExpr);
+        document.getElementById("result").innerText = "Sonuç: " + result;
     }catch{
         document.getElementById("result").innerText = "Hata";
     }
@@ -194,21 +231,15 @@ function calculate(){
 
 function finish(){
 
-    let diff = Math.abs(target - lastResult);
+    let result = eval(currentExpr);
+    let diff = Math.abs(target - result);
 
     let msg="";
     let score=0;
 
-    if(diff==0){
-        msg="Mükemmel! 🎯";
-        score=20;
-    }else if(diff<=5){
-        msg="Çok iyi! 🔥";
-        score=10;
-    }else{
-        msg="Denemeye devam 💪";
-        score=5;
-    }
+    if(diff==0){msg="Mükemmel 🎯"; score=20;}
+    else if(diff<=5){msg="Çok iyi 🔥"; score=10;}
+    else{msg="Devam 💪"; score=5;}
 
     document.getElementById("finalText").innerHTML =
     msg + "<br>Fark: " + diff + "<br>Puan: " + score;
@@ -218,12 +249,8 @@ function finish(){
 
 function restart(){
     document.getElementById("modal").style.display="none";
-    currentExpr="";
-    document.getElementById("expr").value="";
     newGame();
 }
-
-newGame();
 
 </script>
 
