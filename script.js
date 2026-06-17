@@ -7,75 +7,79 @@ let results = [];
 let selected = null;
 let operation = null;
 
-/* 🎬 FLOW CONTROL */
-function startGame(){
-    document.getElementById("startScreen").classList.add("hidden");
-    document.getElementById("tutorialScreen").classList.remove("hidden");
+/* 🌍 LANGUAGE SYSTEM */
+let texts = {
+    tr:{title:"NUMBER ARENA", sub:"SAVAŞA HAZIR MISIN?"},
+    en:{title:"NUMBER ARENA", sub:"ARE YOU READY?"},
+    de:{title:"NUMBER ARENA", sub:"BIST DU BEREIT?"},
+    fr:{title:"NUMBER ARENA", sub:"ES-TU PRÊT?"}
+};
+
+function setLang(l){
+    document.getElementById("title").innerText = texts[l].title;
+    document.getElementById("subtitle").innerText = texts[l].sub;
 }
 
-function goGame(){
-    document.getElementById("tutorialScreen").classList.add("hidden");
+/* 🎬 START GAME */
+function startGame(){
+    document.getElementById("startScreen").classList.add("hidden");
     document.getElementById("gameScreen").classList.remove("hidden");
     render();
 }
 
-/* 🎮 GAME ENGINE */
+/* 🎮 GAME */
 function render(){
 
-    mainContainer.innerHTML = "";
-    resultContainer.innerHTML = "";
+    mainContainer.innerHTML="";
+    resultContainer.innerHTML="";
 
     numbers.forEach(n=>{
-        const ball = document.createElement("div");
-        ball.className = "ball";
-        ball.textContent = n;
-        ball.onclick = ()=>select(n);
-        mainContainer.appendChild(ball);
+        let b=document.createElement("div");
+        b.className="ball";
+        b.innerText=n;
+        b.onclick=()=>select(n);
+        mainContainer.appendChild(b);
     });
 
     results.forEach(r=>{
-        const ball = document.createElement("div");
-        ball.className = "ball result";
-        ball.textContent = r;
-        ball.onclick = ()=>select(r);
-        resultContainer.appendChild(ball);
+        let b=document.createElement("div");
+        b.className="ball result";
+        b.innerText=r;
+        b.onclick=()=>select(r);
+        resultContainer.appendChild(b);
     });
 }
 
-function select(value){
+function select(v){
 
     if(!selected){
-        selected = value;
+        selected=v;
         return;
     }
 
     if(!operation){
-        alert("Önce işlem seç!");
+        alert("Select operation!");
         return;
     }
 
-    let a = selected;
-    let b = value;
-    let res = 0;
+    let a=selected,b=v,res=0;
 
-    if(operation==="+") res = a+b;
-    if(operation==="-") res = a-b;
-    if(operation==="*") res = a*b;
-    if(operation==="/") res = a/b;
+    if(operation==="+")res=a+b;
+    if(operation==="-")res=a-b;
+    if(operation==="*")res=a*b;
+    if(operation==="/")res=a/b;
 
-    numbers = numbers.filter(x=>x!==a && x!==b);
-    results = results.filter(x=>x!==a && x!==b);
+    numbers=numbers.filter(x=>x!==a&&x!==b);
+    results=results.filter(x=>x!==a&&x!==b);
 
     results.push(res);
 
-    selected = null;
-    operation = null;
+    selected=null;
+    operation=null;
 
     render();
 }
 
-window.setOp = function(op){
-    operation = op;
+window.setOp=function(op){
+    operation=op;
 };
-
-render();
