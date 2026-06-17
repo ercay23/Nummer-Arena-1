@@ -15,7 +15,9 @@ function createBalls(){
         ball.className = "ball";
         ball.textContent = n;
 
-        if(n >= 10) ball.classList.add("big");
+        if(n >= 10){
+            ball.classList.add("big");
+        }
 
         ball.onclick = () => {
 
@@ -27,9 +29,9 @@ function createBalls(){
                 return;
             }
 
-            // işlem yoksa dur
+            // işlem yoksa bekle
             if(!operation){
-                alert("Önce işlem seç (+ - × ÷)");
+                alert("Önce işlem seç!");
                 return;
             }
 
@@ -42,13 +44,12 @@ function createBalls(){
             if(operation === "*") result = a * b;
             if(operation === "/") result = a / b;
 
-            // eski sayıları sil
+            // eski küreleri sil
             numbers = numbers.filter(x => x !== a && x !== b);
 
-            // sonucu ekle
+            // yeni sonucu ekle
             numbers.push(result);
 
-            // reset
             selected = null;
             operation = null;
 
@@ -59,9 +60,10 @@ function createBalls(){
     });
 }
 
-// ➕➖✖️➗ seçimi
+// işlem seçimi
 window.setOp = function(op){
     operation = op;
+    console.log("op:", op);
 };
 
 createBalls();
