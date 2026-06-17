@@ -1,1 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Number Arena</title>
+<link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+<div id="langScreen">
+<h1>Number Arena</h1>
+
+<button onclick="setLang('tr')">Türkçe</button>
+<button onclick="setLang('en')">English</button>
+<button onclick="setLang('de')">Deutsch</button>
+<button onclick="setLang('es')">Español</button>
+</div>
+
+<div id="game" style="display:none;">
+<h2 id="targetNumber">HEDEF</h2>
+
+<div id="numbers"></div>
+
+<input id="expression" placeholder="(75*8)+9">
+
+<button onclick="checkAnswer()">Gönder</button>
+<button onclick="newRound()">Yeni Tur</button>
+
+<p id="result"></p>
+<p>Puan: <span id="score">0</span></p>
+<p id="comboLabel">Combo</p>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
