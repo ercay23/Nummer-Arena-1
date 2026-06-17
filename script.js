@@ -1,18 +1,37 @@
-const numbers = [2,4,7,8,9,75];
-
 const container = document.getElementById("balls");
 
-numbers.forEach(number => {
+// 🎲 sayılar
+const numbers = [2, 4, 7, 8, 9, 75];
 
-    const ball = document.createElement("div");
+function createBalls() {
 
-    ball.className = "ball";
-    if(number >= 10){
-    ball.classList.add("big");
-    }
+    container.innerHTML = "";
 
-    ball.textContent = number;
+    numbers.forEach(number => {
 
-    container.appendChild(ball);
+        const ball = document.createElement("div");
 
-});
+        ball.className = "ball";
+
+        ball.textContent = number;
+
+        // 🔶 büyük sayılar (2-3 basamaklı)
+        if (number >= 10) {
+            ball.classList.add("big");
+        }
+
+        // 🎯 tıklama efekti
+        ball.onclick = () => {
+            ball.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                ball.style.transform = "scale(1)";
+            }, 150);
+        };
+
+        container.appendChild(ball);
+    });
+}
+
+createBalls();
+
+console.log("Number Arena script çalışıyor");
