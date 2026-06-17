@@ -6,63 +6,60 @@ body{
     text-align:center;
 }
 
-/* TOP */
-#topBar{
-    display:flex;
-    justify-content:space-between;
-    padding:10px;
-    background:#0b1220;
+/* 🌍 LANG */
+#langBar{
+    position:absolute;
+    top:10px;
+    right:10px;
 }
 
-/* START */
+/* 🎬 START */
 #startScreen{
-    height:80vh;
+    height:100vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    gap:15px;
 }
 
-.prof{
-    width:200px;
-    height:200px;
-    position:relative;
+/* 👨‍🏫 PROF */
+.profWrap{
+    width:220px;
+    height:220px;
+    animation:float 3s ease-in-out infinite;
 }
 
-.glow{
-    position:absolute;
-    width:200px;
-    height:200px;
-    border-radius:50%;
-    background:radial-gradient(circle,rgba(0,229,255,.4),transparent);
-    animation:pulse 2s infinite;
+.profSVG{
+    width:100%;
+    height:100%;
+    filter: drop-shadow(0 0 20px #00e5ff);
 }
 
-.face{font-size:110px}
+/* face */
+.head{fill:#f3d2b2; stroke:#000; stroke-width:2;}
+.eye{fill:#000;}
+.mouth{fill:none; stroke:#000; stroke-width:3;}
+.hair{fill:none; stroke:#ddd; stroke-width:5; stroke-linecap:round;}
 
+/* speech */
 .speech{
-    margin:10px;
-    padding:10px 20px;
+    padding:12px 18px;
     background:rgba(255,255,255,0.1);
-    border-radius:10px;
+    border-radius:12px;
 }
 
+/* buttons */
 button{
-    margin:5px;
-    padding:10px 20px;
-    background:#00e5ff;
+    padding:12px 25px;
     border:none;
     border-radius:10px;
+    background:#00e5ff;
     cursor:pointer;
 }
 
 /* GAME */
 .hidden{display:none;}
-
-#vs{
-    color:#00e5ff;
-    margin:10px;
-}
 
 #balls,#results{
     display:flex;
@@ -70,52 +67,8 @@ button{
     justify-content:center;
 }
 
-.ball{
-    width:75px;
-    height:75px;
-    border-radius:50%;
-    margin:5px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#1d4ed8;
-}
-
-.result{
-    background:#6b21a8;
-}
-
-/* CHAT */
-#chat{
-    margin-top:15px;
-    background:#111827;
-    padding:10px;
-}
-
-#msgs{
-    height:80px;
-    overflow:auto;
-    font-size:13px;
-}
-
-/* LEADERBOARD */
-#scoreScreen{
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-
-#list div{
-    background:#111827;
-    margin:5px;
-    padding:8px;
-    width:200px;
-}
-
-/* ANIM */
-@keyframes pulse{
-    0%,100%{transform:scale(1);opacity:.5}
-    50%{transform:scale(1.2);opacity:1}
+/* anim */
+@keyframes float{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
 }
