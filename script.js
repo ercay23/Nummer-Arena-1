@@ -1,90 +1,66 @@
-let numbers=[2,4,7,8,9,75];
-let results=[];
+let numbers = [2,4,7,8,9,75];
+let results = [];
 
-let selected=null;
-let op=null;
-let score=0;
+let selected = null;
+let op = null;
+let score = 0;
 
-let lang="tr";
-
-/* 🌍 LANG */
-function setLang(l){
-    lang=l;
-
-    const text={
-        tr:"SAVAŞA HAZIR MISIN?",
-        en:"READY FOR BATTLE?",
-        de:"BIST DU BEREIT?",
-        fr:"PRÊT POUR LE COMBAT?"
-    };
-
-    document.getElementById("speech").innerText=text[l];
-}
-
-/* 🎬 START */
-function startGame(){
-    document.getElementById("startScreen").classList.add("hidden");
-    document.getElementById("gameScreen").classList.remove("hidden");
-    render();
-}
-
-/* 🎮 RENDER */
 function render(){
+    const main = document.getElementById("main");
+    const res = document.getElementById("res");
 
-    let m=document.getElementById("main");
-    let r=document.getElementById("res");
+    main.innerHTML = "";
+    res.innerHTML = "";
 
-    m.innerHTML="";
-    r.innerHTML="";
+    document.getElementById("score").innerText = "Score: " + score;
 
-    document.getElementById("score").innerText="Score: "+score;
-
-    numbers.forEach(v=>{
-        let d=document.createElement("div");
-        d.className="ball";
-        d.innerText=v;
-        d.onclick=()=>select(v);
-        m.appendChild(d);
+    numbers.forEach(n=>{
+        let d = document.createElement("div");
+        d.className = "box";
+        d.innerText = n;
+        d.onclick = ()=>select(n);
+        main.appendChild(d);
     });
 
-    results.forEach(v=>{
-        let d=document.createElement("div");
-        d.className="ball result";
-        d.innerText=v;
-        d.onclick=()=>select(v);
-        r.appendChild(d);
+    results.forEach(n=>{
+        let d = document.createElement("div");
+        d.className = "box result";
+        d.innerText = n;
+        d.onclick = ()=>select(n);
+        res.appendChild(d);
     });
 }
 
-/* 🧠 GAME */
 function select(v){
-
-    if(!selected){
-        selected=v;
+    if(selected === null){
+        selected = v;
         return;
     }
 
     if(!op) return;
 
-    let a=selected,b=v,res=0;
+    let a = selected;
+    let b = v;
+    let r = 0;
 
-    if(op==="+")res=a+b;
-    if(op==="-")res=a-b;
-    if(op==="*")res=a*b;
-    if(op==="/")res=a/b;
+    if(op==="+") r = a + b;
+    if(op==="-") r = a - b;
+    if(op==="*") r = a * b;
+    if(op==="/") r = a / b;
 
-    numbers=numbers.filter(x=>x!==a&&x!==b);
-    results.push(res);
+    numbers = numbers.filter(x=>x!==a && x!==b);
+    results.push(r);
 
-    score+=10;
+    score += 10;
 
-    selected=null;
-    op=null;
+    selected = null;
+    op = null;
 
     render();
 }
 
-/* ➕ OP */
 function setOp(o){
-    op=o;
+    op = o;
 }
+
+render();
