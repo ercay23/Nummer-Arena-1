@@ -4,3 +4,42 @@ body{
     text-align:center;
     font-family:Arial;
 }
+#balls{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:40px;
+}
+
+.ball{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+
+    margin:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:32px;
+    font-weight:bold;
+    color:white;
+
+    cursor:pointer;
+
+    background:
+        radial-gradient(circle at 30% 30%,
+        #7dd3fc,
+        #2563eb);
+
+    box-shadow:
+        0 0 20px rgba(59,130,246,.8),
+        inset -10px -10px 20px rgba(0,0,0,.3);
+
+    transition:.2s;
+}
+
+.ball:hover{
+    transform:scale(1.1);
+}
