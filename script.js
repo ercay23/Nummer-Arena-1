@@ -1,48 +1,44 @@
 const container = document.getElementById("balls");
 
-// 🎲 OYUN SAYILARI
-const numbers = [2, 4, 7, 8, 9, 75];
+let selected = null;
+let numbers = [2,4,7,8,9,75];
 
-function createBalls() {
+function createBalls(){
 
     container.innerHTML = "";
 
-    numbers.forEach((number, i) => {
+    numbers.forEach((n,i)=>{
 
         const ball = document.createElement("div");
-
         ball.className = "ball";
+        ball.textContent = n;
 
-        ball.textContent = number;
+        if(n >= 10) ball.classList.add("big");
 
-        // 🟠 büyük sayı kontrolü
-        if (number >= 10) {
-            ball.classList.add("big");
-        }
+        // 🎯 DRAG START
+        ball.draggable = true;
 
-        // ⬇️ başlangıç (ekrana gelmeden önce yukarıda)
-        ball.style.opacity = "0";
-        ball.style.transform = "translateY(-300px) scale(0.5)";
+        ball.ondragstart = (e)=>{
+            selected = n;
+            e.dataTransfer.setData("text", n);
+        };
 
-        // 🎯 tıklama efekti
-        ball.onclick = () => {
-            ball.style.transform = "scale(1.2)";
-            setTimeout(() => {
-                ball.style.transform = "scale(1)";
-            }, 150);
+        // 🟢 DROP ZONE
+        ball.ondragover = (e)=>{
+            e.preventDefault();
+        };
+
+        ball.ondrop = (e)=>{
+            e.preventDefault();
+
+            const a = selected;
+            const b = n;
+
+            console.log("drag:", a, b);
         };
 
         container.appendChild(ball);
-
-        // ⬇️ DÜŞME ANİMASYONU (GARANTİ)
-        setTimeout(() => {
-            ball.style.transition = "0.6s ease-out";
-            ball.style.opacity = "1";
-            ball.style.transform = "translateY(0) scale(1)";
-        }, i * 120);
     });
 }
 
 createBalls();
-
-console.log("Number Arena: balls loaded");
