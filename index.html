@@ -1,67 +1,30 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Number Arena</title>
+<title>Number Arena Core</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- 🌍 LANGUAGE -->
-<div id="langBar">
-    <button onclick="setLang('tr')">TR</button>
-    <button onclick="setLang('en')">EN</button>
-    <button onclick="setLang('de')">DE</button>
-    <button onclick="setLang('fr')">FR</button>
+<h1>NUMBER ARENA</h1>
+
+<div id="score">Score: 0</div>
+
+<div id="ops">
+  <button onclick="setOp('+')">+</button>
+  <button onclick="setOp('-')">-</button>
+  <button onclick="setOp('*')">×</button>
+  <button onclick="setOp('/')">÷</button>
 </div>
 
-<!-- 🎬 START SCREEN -->
-<div id="startScreen">
+<h3>Numbers</h3>
+<div id="main"></div>
 
-    <!-- 👨‍🏫 PROFESSOR (REALISTIC SVG STYLE) -->
-    <div class="profWrap">
-
-        <svg viewBox="0 0 200 200" class="prof">
-            <circle cx="100" cy="100" r="78" class="head"/>
-            <circle cx="70" cy="85" r="7" class="eye"/>
-            <circle cx="130" cy="85" r="7" class="eye"/>
-            <path d="M70 135 Q100 155 130 135" class="mouth"/>
-            <path d="M30 60 Q100 10 170 60" class="hair"/>
-            <path d="M40 45 Q100 0 160 45" class="hair2"/>
-        </svg>
-
-    </div>
-
-    <div class="speech" id="speech">SAVAŞA HAZIR MISIN?</div>
-
-    <button onclick="startGame()">PLAY</button>
-
-</div>
-
-<!-- 🎮 GAME SCREEN -->
-<div id="gameScreen" class="hidden">
-
-    <h1>NUMBER ARENA</h1>
-
-    <div id="score">Score: 0</div>
-
-    <div id="ops">
-        <button onclick="setOp('+')">+</button>
-        <button onclick="setOp('-')">-</button>
-        <button onclick="setOp('*')">×</button>
-        <button onclick="setOp('/')">÷</button>
-    </div>
-
-    <h3>Main Pool</h3>
-    <div id="main"></div>
-
-    <h3>Results</h3>
-    <div id="res"></div>
-
-</div>
+<h3>Results</h3>
+<div id="res"></div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
