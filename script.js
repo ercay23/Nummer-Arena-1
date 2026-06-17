@@ -1,13 +1,13 @@
 const container = document.getElementById("balls");
 
-// 🎲 sayılar
+// 🎲 OYUN SAYILARI
 const numbers = [2, 4, 7, 8, 9, 75];
 
 function createBalls() {
 
     container.innerHTML = "";
 
-    numbers.forEach(number => {
+    numbers.forEach((number, i) => {
 
         const ball = document.createElement("div");
 
@@ -15,10 +15,14 @@ function createBalls() {
 
         ball.textContent = number;
 
-        // 🔶 büyük sayılar (2-3 basamaklı)
+        // 🟠 büyük sayı kontrolü
         if (number >= 10) {
             ball.classList.add("big");
         }
+
+        // ⬇️ başlangıç (ekrana gelmeden önce yukarıda)
+        ball.style.opacity = "0";
+        ball.style.transform = "translateY(-300px) scale(0.5)";
 
         // 🎯 tıklama efekti
         ball.onclick = () => {
@@ -29,9 +33,16 @@ function createBalls() {
         };
 
         container.appendChild(ball);
+
+        // ⬇️ DÜŞME ANİMASYONU (GARANTİ)
+        setTimeout(() => {
+            ball.style.transition = "0.6s ease-out";
+            ball.style.opacity = "1";
+            ball.style.transform = "translateY(0) scale(1)";
+        }, i * 120);
     });
 }
 
 createBalls();
 
-console.log("Number Arena script çalışıyor");
+console.log("Number Arena: balls loaded");
