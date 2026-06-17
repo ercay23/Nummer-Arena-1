@@ -7,6 +7,9 @@ numbers.forEach(number => {
     const ball = document.createElement("div");
 
     ball.className = "ball";
+    if(number >= 10){
+    ball.classList.add("big");
+    }
 
     ball.textContent = number;
 
