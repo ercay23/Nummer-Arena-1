@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>Number Arena</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Number Arena</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- 🎬 START SCREEN -->
+<!-- 🎬 START -->
 <div id="startScreen">
-    <div class="logo">NUMBER ARENA</div>
-    <p class="subtitle">Matematik savaşına hazır mısın?</p>
+
+    <div class="glowTitle" id="title">NUMBER ARENA</div>
+
+    <div class="subtitle" id="subtitle">SAVAŞA HAZIR MISIN?</div>
 
     <button onclick="startGame()">PLAY</button>
-</div>
 
-<!-- 📖 TUTORIAL -->
-<div id="tutorialScreen" class="hidden">
-    <h2>Nasıl Oynanır?</h2>
+    <!-- 🌍 LANGUAGE -->
+    <div id="lang">
+        <button onclick="setLang('tr')">TR</button>
+        <button onclick="setLang('en')">EN</button>
+        <button onclick="setLang('de')">DE</button>
+        <button onclick="setLang('fr')">FR</button>
+    </div>
 
-    <p>🔵 Bir sayı seç</p>
-    <p>➕ Bir işlem seç</p>
-    <p>🔵 İkinci sayıyı seç</p>
-    <p>💥 Sonucu üret</p>
-
-    <button onclick="goGame()">BAŞLA</button>
 </div>
 
 <!-- 🎮 GAME -->
 <div id="gameScreen" class="hidden">
 
-    <h1>NUMBER ARENA</h1>
+    <h1 id="gameTitle">NUMBER ARENA</h1>
 
     <div id="ops">
         <button onclick="setOp('+')">+</button>
