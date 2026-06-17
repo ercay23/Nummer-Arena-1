@@ -6,17 +6,56 @@ body{
     text-align:center;
 }
 
+/* 🔥 START SCREEN */
+#startScreen{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.logo{
+    font-size:48px;
+    color:#00e5ff;
+    font-weight:bold;
+    letter-spacing:2px;
+    animation: glow 2s infinite;
+}
+
+.subtitle{
+    margin:10px;
+    opacity:0.8;
+}
+
+#startScreen button{
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    background:#00e5ff;
+    cursor:pointer;
+}
+
+/* 📖 TUTORIAL */
+#tutorialScreen{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.hidden{
+    display:none;
+}
+
+/* 🎮 GAME */
 h1{
     color:#00e5ff;
     margin-top:20px;
 }
 
-h2{
-    color:#7dd3fc;
-    margin-top:25px;
-}
-
-/* OPS */
 #ops button{
     padding:12px 16px;
     margin:6px;
@@ -25,16 +64,9 @@ h2{
     border-radius:8px;
     cursor:pointer;
     background:#00e5ff;
-    color:#001018;
-    box-shadow:0 0 10px rgba(0,229,255,0.5);
 }
 
-#ops button:hover{
-    transform:scale(1.1);
-}
-
-/* MAIN + RESULT AREAS */
-#balls, #results{
+#balls,#results{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
@@ -42,7 +74,6 @@ h2{
     min-height:80px;
 }
 
-/* 🔵 BALL */
 .ball{
     width:90px;
     height:90px;
@@ -61,22 +92,13 @@ h2{
     user-select:none;
 
     background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
-
-    box-shadow:
-        0 0 18px rgba(59,130,246,.7),
-        inset -8px -8px 16px rgba(0,0,0,.3);
 }
 
-/* 🟠 BIG BALL */
-.big{
-    background: radial-gradient(circle at 30% 30%, #fbbf24, #f97316);
-    box-shadow:
-        0 0 25px rgba(251,191,36,.8),
-        inset -8px -8px 16px rgba(0,0,0,.3);
-}
-
-/* 🟣 RESULT BALL */
 .result{
     background: radial-gradient(circle at 30% 30%, #a855f7, #6b21a8);
-    box-shadow:0 0 20px rgba(168,85,247,0.8);
+}
+
+@keyframes glow{
+    0%,100%{ text-shadow:0 0 10px #00e5ff; }
+    50%{ text-shadow:0 0 25px #00e5ff; }
 }
