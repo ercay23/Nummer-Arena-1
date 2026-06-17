@@ -1,13 +1,15 @@
 const container = document.getElementById("balls");
 
-let selected = null;
 let numbers = [2,4,7,8,9,75];
+
+let selected = null;
+let operation = null;
 
 function createBalls(){
 
     container.innerHTML = "";
 
-    numbers.forEach((n,i)=>{
+    numbers.forEach((n)=>{
 
         const ball = document.createElement("div");
         ball.className = "ball";
@@ -15,30 +17,51 @@ function createBalls(){
 
         if(n >= 10) ball.classList.add("big");
 
-        // 🎯 DRAG START
-        ball.draggable = true;
+        ball.onclick = () => {
 
-        ball.ondragstart = (e)=>{
-            selected = n;
-            e.dataTransfer.setData("text", n);
-        };
+            // 1. seçim
+            if(!selected){
+                selected = n;
+                ball.style.transform = "scale(1.2)";
+                ball.style.boxShadow = "0 0 30px #00e5ff";
+                return;
+            }
 
-        // 🟢 DROP ZONE
-        ball.ondragover = (e)=>{
-            e.preventDefault();
-        };
+            // işlem yoksa dur
+            if(!operation){
+                alert("Önce işlem seç (+ - × ÷)");
+                return;
+            }
 
-        ball.ondrop = (e)=>{
-            e.preventDefault();
+            let a = selected;
+            let b = n;
+            let result = 0;
 
-            const a = selected;
-            const b = n;
+            if(operation === "+") result = a + b;
+            if(operation === "-") result = a - b;
+            if(operation === "*") result = a * b;
+            if(operation === "/") result = a / b;
 
-            console.log("drag:", a, b);
+            // eski sayıları sil
+            numbers = numbers.filter(x => x !== a && x !== b);
+
+            // sonucu ekle
+            numbers.push(result);
+
+            // reset
+            selected = null;
+            operation = null;
+
+            createBalls();
         };
 
         container.appendChild(ball);
     });
 }
+
+// ➕➖✖️➗ seçimi
+window.setOp = function(op){
+    operation = op;
+};
 
 createBalls();
