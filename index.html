@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena</title>
+<title>Number Arena Step Builder</title>
 
 <style>
 body{
@@ -13,16 +13,24 @@ body{
     text-align:center;
 }
 
-h1{
-    color:#00e5ff;
-    margin-top:20px;
+h1{color:#00e5ff;}
+
+.container{padding:15px;}
+
+.card{
+    display:inline-block;
+    padding:15px;
+    margin:5px;
+    background:#1f2937;
+    border-radius:10px;
+    font-size:20px;
+    cursor:pointer;
+    min-width:50px;
 }
 
-#game{
-    display:none;
-}
+.card:hover{transform:scale(1.1);}
 
-button{
+.btn{
     padding:10px;
     margin:5px;
     background:#00e5ff;
@@ -31,83 +39,77 @@ button{
     font-size:16px;
 }
 
-button:hover{
-    opacity:0.8;
-}
-
-.card{
-    display:inline-block;
-    padding:15px;
-    margin:5px;
-    background:#1f2937;
-    border-radius:8px;
-    font-size:20px;
-    cursor:pointer;
-    transition:0.2s;
-}
-
-.card:hover{
-    transform:scale(1.1);
-}
-
-#expr{
+.op{
     padding:10px;
-    width:80%;
-    font-size:18px;
-    margin-top:10px;
+    margin:3px;
+    background:#374151;
+    border:none;
+    color:white;
+    cursor:pointer;
 }
 
-#result{
-    margin-top:10px;
+.selected{
+    background:#00e5ff;
+    color:black;
 }
 
-#score{
-    color:#00ffcc;
+#log{
+    margin-top:20px;
+    text-align:left;
+    max-width:400px;
+    margin-left:auto;
+    margin-right:auto;
+    background:#0f172a;
+    padding:10px;
+    border-radius:10px;
+}
+
+.step{
+    padding:5px;
+    border-bottom:1px solid #334155;
 }
 </style>
 </head>
 
 <body>
 
-<div id="lang">
-<h1>Number Arena</h1>
+<h1>NUMBER ARENA ⚡</h1>
 
-<button onclick="start()">Türkçe</button>
-<button onclick="start()">English</button>
-<button onclick="start()">Deutsch</button>
-<button onclick="start()">Español</button>
-</div>
-
-<div id="game">
+<div class="container">
 
 <h2>HEDEF: <span id="target"></span></h2>
 
-<div id="nums"></div>
-
-<input id="expr" placeholder="Örn: (75*8)+9">
+<div id="numbers"></div>
 
 <br>
 
-<button onclick="check()">Gönder</button>
-<button onclick="newRound()">Yeni Tur</button>
+<div>
+<button class="op" onclick="setOp('+')">+</button>
+<button class="op" onclick="setOp('-')">-</button>
+<button class="op" onclick="setOp('*')">×</button>
+<button class="op" onclick="setOp('/')">÷</button>
+</div>
 
-<p id="result"></p>
+<br>
 
-<h3>Puan: <span id="score">0</span></h3>
+<button class="btn" onclick="buildStep()">EKLE</button>
+<button class="btn" onclick="check()">BİTİR</button>
+<button class="btn" onclick="newRound()">YENİ TUR</button>
+
+<h3>Geçici: <span id="current">0</span></h3>
+
+<div id="log"></div>
 
 </div>
 
 <script>
 
-let score = 0;
-let target = 0;
-let nums = [];
-
-function start(){
-    document.getElementById("lang").style.display="none";
-    document.getElementById("game").style.display="block";
-    newRound();
-}
+let nums=[];
+let selected=null;
+let op=null;
+let current=0;
+let target=0;
+let steps=[];
 
 function randomSmall(){
     return Math.floor(Math.random()*9)+1;
@@ -121,67 +123,77 @@ function randomBig(){
 
 function newRound(){
 
-    nums = [];
-
-    for(let i=0;i<5;i++){
-        nums.push(randomSmall());
-    }
-
+    nums=[];
+    for(let i=0;i<5;i++) nums.push(randomSmall());
     nums.push(randomBig());
 
-    target = Math.floor(Math.random()*900)+100;
+    target=Math.floor(Math.random()*900)+100;
 
-    document.getElementById("target").innerText = target;
+    document.getElementById("target").innerText=target;
 
-    let box = document.getElementById("nums");
-    box.innerHTML = "";
+    let box=document.getElementById("numbers");
+    box.innerHTML="";
 
     nums.forEach(n=>{
-        let d = document.createElement("div");
-        d.className = "card";
-        d.innerText = n;
+        let d=document.createElement("div");
+        d.className="card";
+        d.innerText=n;
 
-        // 👉 TIKLANINCA INPUT'A EKLE
-        d.onclick = () => {
-            document.getElementById("expr").value += n;
+        d.onclick=()=>{
+            selected=n;
         };
 
         box.appendChild(d);
     });
+
+    steps=[];
+    current=0;
+    document.getElementById("current").innerText=0;
+    document.getElementById("log").innerHTML="";
+}
+
+function setOp(o){
+    op=o;
+}
+
+function buildStep(){
+
+    if(selected===null || op===null) return;
+
+    if(current===0){
+        current = selected;
+    }else{
+
+        if(op=='+') current += selected;
+        if(op=='-') current -= selected;
+        if(op=='*') current *= selected;
+        if(op=='/') current /= selected;
+    }
+
+    steps.push(current);
+
+    document.getElementById("current").innerText=current;
+
+    let div=document.createElement("div");
+    div.className="step";
+    div.innerText=current;
+    document.getElementById("log").appendChild(div);
+
+    selected=null;
+    op=null;
 }
 
 function check(){
 
-    let expr = document.getElementById("expr").value;
+    let diff=Math.abs(target-current);
 
-    // güvenlik kontrolü
-    if(!/^[0-9+\-*/().\s]+$/.test(expr)){
-        alert("Geçersiz karakter!");
-        return;
-    }
+    let score=0;
 
-    try{
-        let result = eval(expr);
-        let diff = Math.abs(target - result);
+    if(diff==0) score=20;
+    else if(diff==1) score=10;
+    else if(diff==2) score=5;
 
-        let gain = 0;
-
-        if(diff == 0) gain = 20;
-        else if(diff == 1) gain = 10;
-        else if(diff == 2) gain = 5;
-
-        score += gain;
-
-        document.getElementById("score").innerText = score;
-
-        document.getElementById("result").innerHTML =
-        "Sonuç: " + result +
-        "<br>Fark: " + diff +
-        "<br>+" + gain + " puan";
-
-    }catch{
-        alert("Hatalı işlem");
-    }
+    alert("Final: "+current+" | Fark: "+diff+" | Puan: "+score);
 }
 
 newRound();
