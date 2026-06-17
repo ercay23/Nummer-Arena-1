@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena V5</title>
+<title>Number Arena V6</title>
 
 <style>
 body{
@@ -13,7 +13,7 @@ body{
     text-align:center;
 }
 
-/* 🎓 PROFESSOR */
+/* 🎓 PROFESSOR (GARANTİ ÇALIŞAN SVG) */
 #prof{
     width:120px;
     margin-top:10px;
@@ -23,7 +23,6 @@ body{
 /* TITLE */
 h1{
     color:#00e5ff;
-    margin:10px;
 }
 
 /* TARGET */
@@ -32,7 +31,7 @@ h1{
     color:#00ffcc;
 }
 
-/* CUBES */
+/* 3D CUBES (REAL DEPTH) */
 #numbers{
     display:flex;
     justify-content:center;
@@ -44,7 +43,7 @@ h1{
     width:90px;
     height:90px;
     margin:10px;
-    font-size:30px;
+    font-size:32px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -54,23 +53,22 @@ h1{
 
     cursor:pointer;
 
-    transform:perspective(250px) rotateX(15deg);
+    transform:perspective(400px) rotateX(18deg) rotateY(-8deg);
     box-shadow:
-        6px 6px 14px rgba(0,0,0,0.7),
-        -3px -3px 10px rgba(0,229,255,0.15);
+        10px 10px 20px rgba(0,0,0,0.8),
+        -4px -4px 10px rgba(0,229,255,0.15);
 
     transition:0.2s;
 }
 
 .cube:hover{
-    transform:scale(1.15) rotateX(0deg);
+    transform:scale(1.15) rotateX(0deg) rotateY(0deg);
 }
 
 /* OPS */
-#ops button{
-    padding:12px;
+button{
+    padding:10px;
     margin:5px;
-    font-size:20px;
     background:#00e5ff;
     border:none;
     cursor:pointer;
@@ -85,21 +83,26 @@ h1{
     margin-top:10px;
 }
 
-/* BUTTONS */
-.btn{
+/* LOG */
+#log{
+    margin-top:10px;
+    max-width:400px;
+    margin:auto;
+    text-align:left;
+    background:#111827;
     padding:10px;
-    margin:5px;
-    background:#00e5ff;
-    border:none;
-    cursor:pointer;
-    border-radius:6px;
+    border-radius:10px;
+}
+
+.step{
+    border-bottom:1px solid #334155;
+    padding:5px;
 }
 
 /* MODAL */
 #modal{
     position:fixed;
-    top:0;
-    left:0;
+    top:0;left:0;
     width:100%;
     height:100%;
     display:none;
@@ -121,35 +124,37 @@ h1{
 
 <h1>NUMBER ARENA 🎓</h1>
 
-<!-- 🎓 PROFESSOR IMAGE (placeholder emoji style) -->
-<div>
-    <img id="prof" src="https://i.imgur.com/8QfQ9Qp.png" onerror="this.style.display='none'">
-</div>
+<!-- 🎓 PROFESSOR (SAFE INLINE SVG) -->
+<svg id="prof" viewBox="0 0 200 200">
+<circle cx="100" cy="80" r="50" fill="#1f2937"/>
+<rect x="60" y="130" width="80" height="50" fill="#00e5ff"/>
+<circle cx="85" cy="75" r="5" fill="white"/>
+<circle cx="115" cy="75" r="5" fill="white"/>
+<path d="M80 95 Q100 110 120 95" stroke="white" fill="none"/>
+</svg>
 
 <h2>HEDEF: <span id="target"></span></h2>
 
 <div id="numbers"></div>
 
-<!-- ➗ OPERATORS -->
-<div id="ops">
-<button onclick="addOp('+')">+</button>
-<button onclick="addOp('-')">-</button>
-<button onclick="addOp('*')">×</button>
-<button onclick="addOp('/')">÷</button>
-</div>
+<br>
 
-<input id="expr" readonly>
+<button onclick="setOp('+')">+</button>
+<button onclick="setOp('-')">-</button>
+<button onclick="setOp('*')">×</button>
+<button onclick="setOp('/')">÷</button>
 
 <br>
 
-<button class="btn" onclick="undo()">GERİ AL</button>
-<button class="btn" onclick="clearAll()">SİL</button>
-<button class="btn" onclick="calculate()">HESAPLA</button>
-<button class="btn" onclick="finish()">BİTİR</button>
+<button onclick="build()">EKLE</button>
+<button onclick="undo()">GERİ AL</button>
+<button onclick="finish()">BİTİR</button>
 
-<p id="result"></p>
+<input id="expr" readonly>
 
-<!-- 🎉 MODAL -->
+<div id="log"></div>
+
+<!-- MODAL -->
 <div id="modal">
 <div id="box">
 <h2>Oyun Bitti 🎯</h2>
@@ -164,98 +169,99 @@ let nums=[];
 let target=0;
 let expr="";
 let history=[];
+let op=null;
+let current=0;
 
-function randomSmall(){
-    return Math.floor(Math.random()*9)+1;
-}
+function randomSmall(){return Math.floor(Math.random()*9)+1;}
 
 function randomBig(){
-    let arr=[];
-    for(let i=25;i<=100;i+=5) arr.push(i);
-    return arr[Math.floor(Math.random()*arr.length)];
+let a=[];
+for(let i=25;i<=100;i+=5)a.push(i);
+return a[Math.floor(Math.random()*a.length)];
 }
 
 function newGame(){
 
-    nums=[];
-    for(let i=0;i<5;i++) nums.push(randomSmall());
-    nums.push(randomBig());
+nums=[];
+for(let i=0;i<5;i++)nums.push(randomSmall());
+nums.push(randomBig());
 
-    target=Math.floor(Math.random()*900)+100;
+target=Math.floor(Math.random()*900)+100;
 
-    document.getElementById("target").innerText=target;
+document.getElementById("target").innerText=target;
 
-    let box=document.getElementById("numbers");
-    box.innerHTML="";
+let box=document.getElementById("numbers");
+box.innerHTML="";
 
-    expr="";
-    history=[];
-    document.getElementById("expr").value="";
+expr="";
+history=[];
+current=0;
+document.getElementById("expr").value="";
+document.getElementById("log").innerHTML="";
 
-    nums.forEach(n=>{
-        let d=document.createElement("div");
-        d.className="cube";
-        d.innerText=n;
+nums.forEach(n=>{
+let d=document.createElement("div");
+d.className="cube";
+d.innerText=n;
 
-        d.onclick=()=>{
-            history.push(expr);
-            expr += n;
-            document.getElementById("expr").value=expr;
-        };
+d.onclick=()=>{
+history.push(expr);
 
-        box.appendChild(d);
-    });
+if(current===0){
+current=n;
+}else{
+if(op=='+')current+=n;
+if(op=='-')current-=n;
+if(op=='*')current*=n;
+if(op=='/')current/=n;
 }
 
-function addOp(o){
-    history.push(expr);
-    expr += " " + o + " ";
-    document.getElementById("expr").value=expr;
+expr=current;
+
+document.getElementById("expr").value=current;
+
+let step=document.createElement("div");
+step.className="step";
+step.innerText="→ "+current;
+document.getElementById("log").appendChild(step);
+};
+
+box.appendChild(d);
+});
+
 }
+
+function setOp(o){op=o;}
+
+function build(){}
 
 function undo(){
-    if(history.length>0){
-        expr = history.pop();
-        document.getElementById("expr").value=expr;
-    }
+if(history.length>0){
+expr=history.pop();
+document.getElementById("expr").value=expr;
 }
-
-function clearAll(){
-    history.push(expr);
-    expr="";
-    document.getElementById("expr").value="";
-}
-
-function calculate(){
-    try{
-        let r = eval(expr);
-        document.getElementById("result").innerText="Sonuç: "+r;
-    }catch{
-        document.getElementById("result").innerText="Hata";
-    }
 }
 
 function finish(){
 
-    let r = eval(expr);
-    let diff = Math.abs(target - r);
+let diff=Math.abs(target-current);
 
-    let msg="";
-    let score=0;
+let msg="";
+let score=0;
 
-    if(diff==0){msg="Mükemmel 🎯"; score=20;}
-    else if(diff<=5){msg="İyi 🔥"; score=10;}
-    else{msg="Devam 💪"; score=5;}
+if(diff==0){msg="Mükemmel 🎯";score=20;}
+else if(diff<=5){msg="İyi 🔥";score=10;}
+else{msg="Devam 💪";score=5;}
 
-    document.getElementById("final").innerHTML =
-    msg + "<br>Sonuç: " + r + "<br>Fark: " + diff + "<br>Puan: " + score;
+document.getElementById("final").innerHTML=
+msg+"<br>Sonuç:"+current+"<br>Fark:"+diff+"<br>Puan:"+score;
 
-    document.getElementById("modal").style.display="flex";
+document.getElementById("modal").style.display="flex";
 }
 
 function restart(){
-    document.getElementById("modal").style.display="none";
-    newGame();
+document.getElementById("modal").style.display="none";
+newGame();
 }
 
 newGame();
