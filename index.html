@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<title>Number Arena</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+<div id="profScene">
 
-<!-- 🎬 START -->
-<div id="startScreen">
+    <div class="profBody">
+        <div class="profGlow"></div>
+        <div class="profFace">👨‍🏫</div>
+    </div>
 
-    <div class="glowTitle" id="title">NUMBER ARENA</div>
-
-    <div class="subtitle" id="subtitle">SAVAŞA HAZIR MISIN?</div>
+    <div class="speech">
+        SAVAŞA HAZIR MISIN?
+    </div>
 
     <button onclick="startGame()">PLAY</button>
 
-    <!-- 🌍 LANGUAGE -->
     <div id="lang">
         <button onclick="setLang('tr')">TR</button>
         <button onclick="setLang('en')">EN</button>
@@ -25,28 +19,3 @@
     </div>
 
 </div>
-
-<!-- 🎮 GAME -->
-<div id="gameScreen" class="hidden">
-
-    <h1 id="gameTitle">NUMBER ARENA</h1>
-
-    <div id="ops">
-        <button onclick="setOp('+')">+</button>
-        <button onclick="setOp('-')">-</button>
-        <button onclick="setOp('*')">×</button>
-        <button onclick="setOp('/')">÷</button>
-    </div>
-
-    <h2>Main Pool</h2>
-    <div id="balls"></div>
-
-    <h2>Results</h2>
-    <div id="results"></div>
-
-</div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
