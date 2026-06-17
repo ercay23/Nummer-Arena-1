@@ -7,20 +7,45 @@
 </head>
 <body>
 
-<h1>NUMBER ARENA</h1>
+<!-- 🎬 START SCREEN -->
+<div id="startScreen">
+    <div class="logo">NUMBER ARENA</div>
+    <p class="subtitle">Matematik savaşına hazır mısın?</p>
 
-<div id="ops">
-    <button onclick="setOp('+')">+</button>
-    <button onclick="setOp('-')">-</button>
-    <button onclick="setOp('*')">×</button>
-    <button onclick="setOp('/')">÷</button>
+    <button onclick="startGame()">PLAY</button>
 </div>
 
-<h2>Main Pool</h2>
-<div id="balls"></div>
+<!-- 📖 TUTORIAL -->
+<div id="tutorialScreen" class="hidden">
+    <h2>Nasıl Oynanır?</h2>
 
-<h2>Results</h2>
-<div id="results"></div>
+    <p>🔵 Bir sayı seç</p>
+    <p>➕ Bir işlem seç</p>
+    <p>🔵 İkinci sayıyı seç</p>
+    <p>💥 Sonucu üret</p>
+
+    <button onclick="goGame()">BAŞLA</button>
+</div>
+
+<!-- 🎮 GAME -->
+<div id="gameScreen" class="hidden">
+
+    <h1>NUMBER ARENA</h1>
+
+    <div id="ops">
+        <button onclick="setOp('+')">+</button>
+        <button onclick="setOp('-')">-</button>
+        <button onclick="setOp('*')">×</button>
+        <button onclick="setOp('/')">÷</button>
+    </div>
+
+    <h2>Main Pool</h2>
+    <div id="balls"></div>
+
+    <h2>Results</h2>
+    <div id="results"></div>
+
+</div>
 
 <script src="script.js"></script>
 
