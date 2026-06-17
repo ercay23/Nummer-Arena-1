@@ -1,81 +1,91 @@
-body{
-    margin:0;
-    background: radial-gradient(circle at top,#050816,#00010a);
-    font-family: Arial;
-    color:white;
-    text-align:center;
-}
-
-/* 🎬 START SCREEN */
 #startScreen{
     height:100vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    background: radial-gradient(circle at top,#050816,#00010a);
 }
 
-.glowTitle{
-    font-size:60px;
-    font-weight:bold;
-    color:#00e5ff;
-    text-shadow:0 0 20px #00e5ff;
-    animation:pulse 2s infinite;
-}
-
-.subtitle{
-    margin:10px;
-    opacity:0.8;
-    font-size:20px;
-}
-
-button{
-    margin-top:20px;
-    padding:15px 30px;
-    font-size:18px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    background:#00e5ff;
-}
-
-#lang button{
-    margin:5px;
-    padding:8px 12px;
-    font-size:14px;
-}
-
-/* 🎮 GAME */
-.hidden{ display:none; }
-
-h1{
-    color:#00e5ff;
-}
-
-#balls,#results{
+/* 🎬 PROF SCENE */
+#profScene{
     display:flex;
+    flex-direction:column;
+    align-items:center;
     justify-content:center;
-    flex-wrap:wrap;
-    margin-top:20px;
+    gap:20px;
 }
 
-.ball{
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    margin:12px;
+/* 👨‍🏫 BODY */
+.profBody{
+    position:relative;
+    width:220px;
+    height:220px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:30px;
-    background: radial-gradient(circle,#4aa3ff,#1d4ed8);
+    animation: breathe 3s ease-in-out infinite;
 }
 
-.result{
-    background: radial-gradient(circle,#a855f7,#6b21a8);
+/* 🔥 glow aura */
+.profGlow{
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.4), transparent 60%);
+    filter: blur(10px);
+    animation: pulse 2.5s infinite;
+}
+
+/* 👨‍🏫 face */
+.profFace{
+    font-size:120px;
+    z-index:2;
+    filter: drop-shadow(0 0 20px #00e5ff);
+}
+
+/* 💬 speech bubble */
+.speech{
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding:15px 25px;
+    border-radius:20px;
+    font-size:18px;
+    backdrop-filter: blur(6px);
+    animation: floatText 2s ease-in-out infinite;
+}
+
+/* 🎮 button */
+#startScreen button{
+    margin-top:10px;
+    padding:15px 35px;
+    font-size:18px;
+    border:none;
+    border-radius:12px;
+    background:#00e5ff;
+    cursor:pointer;
+    box-shadow:0 0 20px rgba(0,229,255,0.5);
+}
+
+/* 🌍 lang */
+#lang button{
+    margin:5px;
+    padding:8px 12px;
+}
+
+/* ✨ animations */
+@keyframes breathe{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.05); }
 }
 
 @keyframes pulse{
-    0%,100%{ transform:scale(1); }
-    50%{ transform:scale(1.05); }
+    0%,100%{ transform:scale(1); opacity:0.6; }
+    50%{ transform:scale(1.2); opacity:1; }
+}
+
+@keyframes floatText{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
 }
