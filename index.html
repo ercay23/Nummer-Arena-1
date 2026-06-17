@@ -2,41 +2,37 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena</title>
+<title>Number Arena Ultimate</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- 🎬 START SCREEN -->
+<!-- 💰 TOP BAR -->
+<div id="topBar">
+    <div id="user">FREE USER</div>
+    <div id="ad">AD SPACE</div>
+</div>
+
+<!-- 🎬 START -->
 <div id="startScreen">
 
-    <div id="profScene">
-
-        <div class="profBody">
-            <div class="profGlow"></div>
-            <div class="profFace">👨‍🏫</div>
-        </div>
-
-        <div class="speech">SAVAŞA HAZIR MISIN?</div>
-
-        <button onclick="startGame()">PLAY</button>
-
-        <div id="lang">
-            <button onclick="setLang('tr')">TR</button>
-            <button onclick="setLang('en')">EN</button>
-            <button onclick="setLang('de')">DE</button>
-            <button onclick="setLang('fr')">FR</button>
-        </div>
-
+    <div class="prof">
+        <div class="glow"></div>
+        <div class="face">👨‍🏫</div>
     </div>
+
+    <div class="speech" id="speech">SAVAŞA HAZIR MISIN?</div>
+
+    <button onclick="startGame()">PLAY</button>
+    <button onclick="upgrade()">PREMIUM</button>
 
 </div>
 
-<!-- 🎮 GAME SCREEN -->
+<!-- 🎮 GAME -->
 <div id="gameScreen" class="hidden">
 
-    <h1>NUMBER ARENA</h1>
+    <div id="vs">YOU vs BOT</div>
 
     <div id="ops">
         <button onclick="setOp('+')">+</button>
@@ -45,12 +41,30 @@
         <button onclick="setOp('/')">÷</button>
     </div>
 
-    <h2>Main Pool</h2>
+    <div>Main</div>
     <div id="balls"></div>
 
-    <h2>Results</h2>
+    <div>Results</div>
     <div id="results"></div>
 
+    <div>Score: <span id="score">0</span></div>
+
+    <button onclick="finish()">FINISH</button>
+
+    <!-- 💬 CHAT -->
+    <div id="chat">
+        <div id="msgs"></div>
+        <input id="input" placeholder="chat..." />
+        <button onclick="send()">Send</button>
+    </div>
+
+</div>
+
+<!-- 🏆 LEADERBOARD -->
+<div id="scoreScreen" class="hidden">
+    <h1>LEADERBOARD</h1>
+    <div id="list"></div>
+    <button onclick="back()">BACK</button>
 </div>
 
 <script src="script.js"></script>
