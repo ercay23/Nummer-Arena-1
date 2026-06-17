@@ -1,7 +1,7 @@
 body{
     margin:0;
     font-family:Arial;
-    background:radial-gradient(circle,#050816,#00010a);
+    background:radial-gradient(circle at top,#0b1220,#02040a);
     color:white;
     text-align:center;
 }
@@ -20,32 +20,33 @@ body{
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:15px;
+    gap:12px;
 }
 
-/* 👨‍🏫 PROF */
+/* 👨‍🏫 PROFESSOR */
 .profWrap{
     width:220px;
     height:220px;
     animation:float 3s ease-in-out infinite;
 }
 
-.profSVG{
+.prof{
     width:100%;
     height:100%;
-    filter: drop-shadow(0 0 20px #00e5ff);
+    filter:drop-shadow(0 0 25px #00e5ff);
 }
 
-/* face */
-.head{fill:#f3d2b2; stroke:#000; stroke-width:2;}
+.head{fill:#f2d3b2; stroke:#000; stroke-width:2;}
 .eye{fill:#000;}
 .mouth{fill:none; stroke:#000; stroke-width:3;}
-.hair{fill:none; stroke:#ddd; stroke-width:5; stroke-linecap:round;}
+.hair{fill:none; stroke:#ddd; stroke-width:4; stroke-linecap:round;}
+.hair2{fill:none; stroke:#bbb; stroke-width:3; stroke-linecap:round;}
 
 /* speech */
 .speech{
     padding:12px 18px;
-    background:rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.2);
     border-radius:12px;
 }
 
@@ -61,13 +62,34 @@ button{
 /* GAME */
 .hidden{display:none;}
 
-#balls,#results{
+#main,#res{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
+    margin-top:10px;
 }
 
-/* anim */
+.ball{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    margin:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#1d4ed8;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.result{background:#6b21a8;}
+
+#score{
+    margin:10px;
+    font-size:20px;
+}
+
+/* ANIM */
 @keyframes float{
     0%,100%{transform:translateY(0)}
     50%{transform:translateY(-10px)}
