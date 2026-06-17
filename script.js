@@ -7,34 +7,37 @@ let results = [];
 let selected = null;
 let operation = null;
 
+/* 🎬 FLOW CONTROL */
+function startGame(){
+    document.getElementById("startScreen").classList.add("hidden");
+    document.getElementById("tutorialScreen").classList.remove("hidden");
+}
+
+function goGame(){
+    document.getElementById("tutorialScreen").classList.add("hidden");
+    document.getElementById("gameScreen").classList.remove("hidden");
+    render();
+}
+
+/* 🎮 GAME ENGINE */
 function render(){
 
     mainContainer.innerHTML = "";
     resultContainer.innerHTML = "";
 
-    // 🔵 MAIN
-    numbers.forEach((n)=>{
-
+    numbers.forEach(n=>{
         const ball = document.createElement("div");
         ball.className = "ball";
         ball.textContent = n;
-
-        if(n >= 10) ball.classList.add("big");
-
-        ball.onclick = () => select(n);
-
+        ball.onclick = ()=>select(n);
         mainContainer.appendChild(ball);
     });
 
-    // 🟣 RESULTS
-    results.forEach((r)=>{
-
+    results.forEach(r=>{
         const ball = document.createElement("div");
         ball.className = "ball result";
         ball.textContent = r;
-
-        ball.onclick = () => select(r);
-
+        ball.onclick = ()=>select(r);
         resultContainer.appendChild(ball);
     });
 }
@@ -53,17 +56,17 @@ function select(value){
 
     let a = selected;
     let b = value;
-    let result = 0;
+    let res = 0;
 
-    if(operation === "+") result = a + b;
-    if(operation === "-") result = a - b;
-    if(operation === "*") result = a * b;
-    if(operation === "/") result = a / b;
+    if(operation==="+") res = a+b;
+    if(operation==="-") res = a-b;
+    if(operation==="*") res = a*b;
+    if(operation==="/") res = a/b;
 
-    numbers = numbers.filter(x => x !== a && x !== b);
-    results = results.filter(x => x !== a && x !== b);
+    numbers = numbers.filter(x=>x!==a && x!==b);
+    results = results.filter(x=>x!==a && x!==b);
 
-    results.push(result);
+    results.push(res);
 
     selected = null;
     operation = null;
