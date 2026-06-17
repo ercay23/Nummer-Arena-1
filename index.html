@@ -3,36 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <title>Number Arena</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(180deg,#0b1220,#111827);
+    color:white;
+    text-align:center;
+}
+
+h1{
+    color:#00e5ff;
+    margin-top:20px;
+}
+
+#game{
+    display:none;
+}
+
+button{
+    padding:10px;
+    margin:5px;
+    background:#00e5ff;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    opacity:0.8;
+}
+
+.card{
+    display:inline-block;
+    padding:15px;
+    margin:5px;
+    background:#1f2937;
+    border-radius:8px;
+    font-size:20px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.card:hover{
+    transform:scale(1.1);
+}
+
+#expr{
+    padding:10px;
+    width:80%;
+    font-size:18px;
+    margin-top:10px;
+}
+
+#result{
+    margin-top:10px;
+}
+
+#score{
+    color:#00ffcc;
+}
+</style>
 </head>
 
 <body>
 
-<div id="langScreen">
+<div id="lang">
 <h1>Number Arena</h1>
 
-<button onclick="setLang('tr')">Türkçe</button>
-<button onclick="setLang('en')">English</button>
-<button onclick="setLang('de')">Deutsch</button>
-<button onclick="setLang('es')">Español</button>
+<button onclick="start()">Türkçe</button>
+<button onclick="start()">English</button>
+<button onclick="start()">Deutsch</button>
+<button onclick="start()">Español</button>
 </div>
 
-<div id="game" style="display:none;">
-<h2 id="targetNumber">HEDEF</h2>
+<div id="game">
 
-<div id="numbers"></div>
+<h2>HEDEF: <span id="target"></span></h2>
 
-<input id="expression" placeholder="(75*8)+9">
+<div id="nums"></div>
 
-<button onclick="checkAnswer()">Gönder</button>
+<input id="expr" placeholder="Örn: (75*8)+9">
+
+<br>
+
+<button onclick="check()">Gönder</button>
 <button onclick="newRound()">Yeni Tur</button>
 
 <p id="result"></p>
-<p>Puan: <span id="score">0</span></p>
-<p id="comboLabel">Combo</p>
+
+<h3>Puan: <span id="score">0</span></h3>
+
 </div>
 
-<script src="script.js"></script>
+<script>
+
+let score = 0;
+let target = 0;
+let nums = [];
+
+function start(){
+    document.getElementById("lang").style.display="none";
+    document.getElementById("game").style.display="block";
+    newRound();
+}
+
+function randomSmall(){
+    return Math.floor(Math.random()*9)+1;
+}
+
+function randomBig(){
+    let arr=[];
+    for(let i=25;i<=100;i+=5) arr.push(i);
+    return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function newRound(){
+
+    nums = [];
+
+    for(let i=0;i<5;i++){
+        nums.push(randomSmall());
+    }
+
+    nums.push(randomBig());
+
+    target = Math.floor(Math.random()*900)+100;
+
+    document.getElementById("target").innerText = target;
+
+    let box = document.getElementById("nums");
+    box.innerHTML = "";
+
+    nums.forEach(n=>{
+        let d = document.createElement("div");
+        d.className = "card";
+        d.innerText = n;
+
+        // 👉 TIKLANINCA INPUT'A EKLE
+        d.onclick = () => {
+            document.getElementById("expr").value += n;
+        };
+
+        box.appendChild(d);
+    });
+}
+
+function check(){
+
+    let expr = document.getElementById("expr").value;
+
+    // güvenlik kontrolü
+    if(!/^[0-9+\-*/().\s]+$/.test(expr)){
+        alert("Geçersiz karakter!");
+        return;
+    }
+
+    try{
+        let result = eval(expr);
+        let diff = Math.abs(target - result);
+
+        let gain = 0;
+
+        if(diff == 0) gain = 20;
+        else if(diff == 1) gain = 10;
+        else if(diff == 2) gain = 5;
+
+        score += gain;
+
+        document.getElementById("score").innerText = score;
+
+        document.getElementById("result").innerHTML =
+        "Sonuç: " + result +
+        "<br>Fark: " + diff +
+        "<br>+" + gain + " puan";
+
+    }catch{
+        alert("Hatalı işlem");
+    }
+}
+
+newRound();
+
+</script>
 
 </body>
 </html>
