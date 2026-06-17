@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Number Arena V6</title>
+<title>Number Arena V7</title>
 
 <style>
 body{
@@ -13,16 +13,17 @@ body{
     text-align:center;
 }
 
-/* 🎓 PROFESSOR (GARANTİ ÇALIŞAN SVG) */
+/* 🎓 PROFESSOR (RENKLİ + GLOW) */
 #prof{
-    width:120px;
+    width:140px;
     margin-top:10px;
-    filter:drop-shadow(0 0 10px #00e5ff);
+    filter:drop-shadow(0 0 15px #00e5ff);
 }
 
 /* TITLE */
 h1{
     color:#00e5ff;
+    margin:5px;
 }
 
 /* TARGET */
@@ -31,32 +32,35 @@ h1{
     color:#00ffcc;
 }
 
-/* 3D CUBES (REAL DEPTH) */
+/* TOP CUBES */
 #numbers{
     display:flex;
     justify-content:center;
     flex-wrap:wrap;
-    margin-top:15px;
 }
 
+/* 🧊 REAL 3D CUBE */
 .cube{
-    width:90px;
-    height:90px;
+    width:85px;
+    height:85px;
     margin:10px;
-    font-size:32px;
+    font-size:28px;
+
     display:flex;
     align-items:center;
     justify-content:center;
 
-    background:linear-gradient(145deg,#1f2937,#0b1220);
     border-radius:14px;
 
     cursor:pointer;
 
-    transform:perspective(400px) rotateX(18deg) rotateY(-8deg);
+    background:linear-gradient(145deg,#2b3a55,#0b1220);
+
+    transform:perspective(500px) rotateX(18deg) rotateY(-10deg);
+
     box-shadow:
-        10px 10px 20px rgba(0,0,0,0.8),
-        -4px -4px 10px rgba(0,229,255,0.15);
+        8px 8px 18px rgba(0,0,0,0.7),
+        -3px -3px 10px rgba(0,229,255,0.25);
 
     transition:0.2s;
 }
@@ -65,7 +69,43 @@ h1{
     transform:scale(1.15) rotateX(0deg) rotateY(0deg);
 }
 
-/* OPS */
+/* RESULT POOL */
+#pool{
+    margin-top:20px;
+    padding:10px;
+    background:#111827;
+    min-height:110px;
+    border-top:2px solid #00e5ff;
+}
+
+.poolCube{
+    display:inline-block;
+    width:70px;
+    height:70px;
+    margin:6px;
+
+    font-size:22px;
+
+    background:linear-gradient(145deg,#1f2937,#00e5ff33);
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transform:perspective(400px) rotateX(12deg);
+
+    box-shadow:0 0 10px rgba(0,229,255,0.3);
+}
+
+.poolCube:hover{
+    transform:scale(1.1);
+}
+
+/* BUTTONS */
 button{
     padding:10px;
     margin:5px;
@@ -75,7 +115,6 @@ button{
     border-radius:6px;
 }
 
-/* INPUT */
 #expr{
     width:85%;
     font-size:22px;
@@ -83,26 +122,11 @@ button{
     margin-top:10px;
 }
 
-/* LOG */
-#log{
-    margin-top:10px;
-    max-width:400px;
-    margin:auto;
-    text-align:left;
-    background:#111827;
-    padding:10px;
-    border-radius:10px;
-}
-
-.step{
-    border-bottom:1px solid #334155;
-    padding:5px;
-}
-
 /* MODAL */
 #modal{
     position:fixed;
-    top:0;left:0;
+    top:0;
+    left:0;
     width:100%;
     height:100%;
     display:none;
@@ -124,13 +148,20 @@ button{
 
 <h1>NUMBER ARENA 🎓</h1>
 
-<!-- 🎓 PROFESSOR (SAFE INLINE SVG) -->
+<!-- 🎓 PROFESSOR (RENKLİ SVG) -->
 <svg id="prof" viewBox="0 0 200 200">
-<circle cx="100" cy="80" r="50" fill="#1f2937"/>
-<rect x="60" y="130" width="80" height="50" fill="#00e5ff"/>
-<circle cx="85" cy="75" r="5" fill="white"/>
-<circle cx="115" cy="75" r="5" fill="white"/>
-<path d="M80 95 Q100 110 120 95" stroke="white" fill="none"/>
+<defs>
+<linearGradient id="g">
+<stop offset="0%" stop-color="#00e5ff"/>
+<stop offset="100%" stop-color="#7c3aed"/>
+</linearGradient>
+</defs>
+
+<circle cx="100" cy="80" r="50" fill="url(#g)"/>
+<circle cx="85" cy="75" r="6" fill="white"/>
+<circle cx="115" cy="75" r="6" fill="white"/>
+<path d="M80 100 Q100 120 120 100" stroke="white" stroke-width="4" fill="none"/>
+<rect x="60" y="130" width="80" height="40" fill="#00ffcc"/>
 </svg>
 
 <h2>HEDEF: <span id="target"></span></h2>
@@ -139,27 +170,30 @@ button{
 
 <br>
 
-<button onclick="setOp('+')">+</button>
-<button onclick="setOp('-')">-</button>
-<button onclick="setOp('*')">×</button>
-<button onclick="setOp('/')">÷</button>
+<button onclick="addOp('+')">+</button>
+<button onclick="addOp('-')">-</button>
+<button onclick="addOp('*')">×</button>
+<button onclick="addOp('/')">÷</button>
 
 <br>
 
-<button onclick="build()">EKLE</button>
-<button onclick="undo()">GERİ AL</button>
-<button onclick="finish()">BİTİR</button>
-
 <input id="expr" readonly>
 
-<div id="log"></div>
+<br>
+
+<button onclick="calculate()">HESAPLA</button>
+<button onclick="finish()">BİTİR</button>
+
+<!-- 🧊 RESULT POOL -->
+<h3>Ara Sonuçlar</h3>
+<div id="pool"></div>
 
 <!-- MODAL -->
 <div id="modal">
 <div id="box">
 <h2>Oyun Bitti 🎯</h2>
 <p id="final"></p>
-<button onclick="restart()">Tekrar Oyna</button>
+<button onclick="restart()">Tekrar</button>
 </div>
 </div>
 
@@ -168,9 +202,8 @@ button{
 let nums=[];
 let target=0;
 let expr="";
-let history=[];
-let op=null;
-let current=0;
+let lastResult=0;
+let pool=[];
 
 function randomSmall(){return Math.floor(Math.random()*9)+1;}
 
@@ -190,14 +223,11 @@ target=Math.floor(Math.random()*900)+100;
 
 document.getElementById("target").innerText=target;
 
-let box=document.getElementById("numbers");
-box.innerHTML="";
-
 expr="";
-history=[];
-current=0;
+pool=[];
 document.getElementById("expr").value="";
-document.getElementById("log").innerHTML="";
+document.getElementById("pool").innerHTML="";
+document.getElementById("numbers").innerHTML="";
 
 nums.forEach(n=>{
 let d=document.createElement("div");
@@ -205,46 +235,48 @@ d.className="cube";
 d.innerText=n;
 
 d.onclick=()=>{
-history.push(expr);
-
-if(current===0){
-current=n;
-}else{
-if(op=='+')current+=n;
-if(op=='-')current-=n;
-if(op=='*')current*=n;
-if(op=='/')current/=n;
-}
-
-expr=current;
-
-document.getElementById("expr").value=current;
-
-let step=document.createElement("div");
-step.className="step";
-step.innerText="→ "+current;
-document.getElementById("log").appendChild(step);
+expr += n;
+document.getElementById("expr").value=expr;
 };
 
-box.appendChild(d);
+document.getElementById("numbers").appendChild(d);
 });
 
 }
 
-function setOp(o){op=o;}
-
-function build(){}
-
-function undo(){
-if(history.length>0){
-expr=history.pop();
+function addOp(o){
+expr += " " + o + " ";
 document.getElementById("expr").value=expr;
 }
+
+function calculate(){
+try{
+lastResult = eval(expr);
+addToPool(lastResult);
+}catch{
+alert("Hata");
+}
+}
+
+function addToPool(val){
+
+pool.push(val);
+
+let c=document.createElement("div");
+c.className="poolCube";
+c.innerText=val;
+
+c.onclick=()=>{
+expr += val;
+document.getElementById("expr").value=expr;
+};
+
+document.getElementById("pool").appendChild(c);
 }
 
 function finish(){
 
-let diff=Math.abs(target-current);
+let diff=Math.abs(target-lastResult);
 
 let msg="";
 let score=0;
@@ -254,7 +286,7 @@ else if(diff<=5){msg="İyi 🔥";score=10;}
 else{msg="Devam 💪";score=5;}
 
 document.getElementById("final").innerHTML=
-msg+"<br>Sonuç:"+current+"<br>Fark:"+diff+"<br>Puan:"+score;
+msg+"<br>Sonuç:"+lastResult+"<br>Fark:"+diff+"<br>Puan:"+score;
 
 document.getElementById("modal").style.display="flex";
 }
